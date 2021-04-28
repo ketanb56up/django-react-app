@@ -1,0 +1,9 @@
+userData 
+{firstName: "Akki", lastName: "rathore", userName: "Akki123", cnPassword: "akki1999", email: "akki@yopmail.com", …}
+cnPassword: "akki1999"
+email: "akki@yopmail.com"
+firstName: "Akki"
+lastName: "rathore"
+password: "akki1999"
+userName: "Akki123"
+https://www.freecodecamp.org/news/access-control-allow-origin-header-explained/

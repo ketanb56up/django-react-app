@@ -1,26 +1,78 @@
-import React, { Fragment } from 'react'
-
+import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
+import { Link } from 'react-router-dom'
+import { login } from "../Redux/Action/userAction";
 const Login = () => {
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+
+    const dispatch = useDispatch();
+    const alert = useAlert();
+
+    const { isAuthenticated, loading, error, user } = useSelector(
+        (state) => state.users
+    );
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            history.push("/user/dashboard");
+        }
+        if (error) {
+            alert.error(error);
+            dispatch(clearErrors());
+        }
+
+    });
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(login(userName, password));
+    };
+
     return (
         <Fragment>
             <div className="container mt-5">
-                <form>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <form onSubmit={submitHandler}>
+                    <div className="mb-3">
+                        <label htmlFor="UserName" className="form-label">
+                            User Name
+                    </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="UserName"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            placeholder="User Name"
+                        />
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" />
+
+                    <div className="mb-3">
+                        <label htmlFor="Password1" className="form-label">
+                            Password
+                    </label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="Password1"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                        />
                     </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                    <button type="submit" className="btn btn-primary" disabled={loading ? true : false}>
+                        Login
+                </button>
+
+                    <Link to="/register" className="float-right mt-3">
+                        New User?
+                     </Link>
+
                 </form>
             </div>
+
         </Fragment>
     )
 }

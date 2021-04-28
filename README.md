@@ -1,7 +1,5 @@
-# django-react-starterpack
+# django-react-app
 A basic set up for a Django project utilizing React.
-
-This project accompanies the Medium article, [Supercharging your next web project with Django, React, and Webpack](https://medium.com/@kkworden/supercharging-your-next-web-project-with-django-react-and-webpack-65b015a8831f).
 
 ## Getting started
 You will need:
@@ -15,6 +13,8 @@ Open a shell and run `pipenv install` to install the necessary Python dependenci
 
 Next, run `pipenv shell` to activate the virtual environment.
 
-In a separate shell, run `npm i` to install the necessary NPM dependencies and `npm run webpack` to start Webpack bundling.
+then run `python manage.py runserver`
 
-You should be able to navigate to http://127.0.0.1:8000. Happy coding!
+In a separate shell, run `npm i` to install the necessary NPM dependencies and `npm run dev` to start Webpack bundling.
+
+You should be able to navigate to http://127.0.0.1:8000.

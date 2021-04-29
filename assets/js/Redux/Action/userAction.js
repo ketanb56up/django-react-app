@@ -8,17 +8,11 @@ import {
     USER_LOGIN_FAIL,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
-    LOGOUT_SUCCESS,
-    LOGOUT_FAIL,
-
-    LOAD_USER_FAIL,
-    LOAD_USER_SUCCESS,
-    LOAD_USER_REQUEST,
 
     CLEAR_ERRORS,
 
 } from "../Constant/userConstants";
-const { users } = useSelector(state => state.users)
+
 
 export const register = (userData) => async (dispatch) => {
     try {
@@ -66,27 +60,6 @@ export const login = (loginDetails) => async (dispatch) => {
     }
 };
 
-
-// Load user
-export const loadUser = () => async (dispatch) => {
-    try {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-        });
-
-        console.log("userS checking", users)
-        dispatch({
-            type: LOAD_USER_SUCCESS,
-            payload: users.user
-        });
-
-    } catch (error) {
-        dispatch({
-            type: LOAD_USER_FAIL,
-            payload: error.response.data.message
-        });
-    }
-};
 
 // // Logout user
 // export const logout = () => async (dispatch) => {

@@ -8,9 +8,6 @@ import {
     USER_LOGIN_FAIL,
 
     CLEAR_ERRORS,
-    LOGOUT_SUCCESS,
-    LOGOUT_FAIL,
-
 
 } from "../Constant/userConstants";
 
@@ -41,18 +38,8 @@ export const userReducer = (state = { user: {} }, action) => {
                 users: null,
                 error: action.type,
             };
-        case LOGOUT_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: false,
-                users: null,
-            };
-        case LOGOUT_FAIL:
-            return {
-                ...state,
-                error: action.payload,
-            };
+
+
         case CLEAR_ERRORS:
             return {
                 ...state,

@@ -2,13 +2,13 @@ import React, { Fragment, useState } from 'react'
 import { addBook } from '../../Redux/Action/bookAction'
 
 const AddBooks = () => {
-    const [authorName, setAuthorName] = useState('')
+    const [authorID, setAuthorId] = useState('')
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [bookImage, setBookImage] = useState('')
 
     const bookDeatils = {
-        'author': authorName, 'title': title, 'description': description, 'poster_image': bookImage
+        'author': authorID, 'title': title, 'description': description, 'poster_image': bookImage
     };
 
     const submitHandler = (e) => {
@@ -21,21 +21,21 @@ const AddBooks = () => {
 
             <div className="mb-3">
                 <label htmlFor="FirstName" className="form-label">
-                    Author Name
+                    Author Id
             </label>
                 <input
                     type="text"
                     className="form-control"
                     id="FirstName"
-                    value={authorName}
-                    onChange={(e) => setAuthorName(e.target.value)}
+                    value={authorID}
+                    onChange={(e) => setAuthorId(e.target.value)}
                     placeholder="Author Name"
                 />
             </div>
 
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">
-                    Last Name
+                    Book Title
              </label>
                 <input
                     type="text"
@@ -49,7 +49,7 @@ const AddBooks = () => {
 
             <div className="mb-3">
                 <label htmlFor="description" className="form-label">
-                    User Name
+                    Description
             </label>
                 <input
                     type="text"
@@ -70,7 +70,7 @@ const AddBooks = () => {
                     value={bookImage}
                     className='custom-file-input'
                     onChange={(e) => setBookImage(e.target.files[0])}
-                    id='customFile'
+                    id='Bimage'
                     accept="iamges/*"
                 />
             </div>

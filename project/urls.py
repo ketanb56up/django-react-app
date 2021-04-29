@@ -15,7 +15,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('api/', include(router.urls)),
-    path('', include('page.urls')),
 ]
 
 if settings.DEBUG:

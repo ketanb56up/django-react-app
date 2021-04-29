@@ -27,6 +27,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class LogoutView(APIView):
+    """Logout api."""
+
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):

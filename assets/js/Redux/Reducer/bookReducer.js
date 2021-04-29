@@ -1,41 +1,30 @@
 import {
-    USER_REGISTER_FAIL,
-    USER_REGISTER_REQUEST,
-    USER_REGISTER_SUCCESS,
-
-    USER_LOGIN_REQUEST,
-    USER_LOGIN_SUCCESS,
-    USER_LOGIN_FAIL,
-
-    CLEAR_ERRORS,
-
-} from "../Constant/userConstants";
+    ADD_USER_BOOK_FAIL,
+    ADD_USER_BOOK_REQUEST,
+    ADD_USER_BOOK_SUCCESS,
+} from "../Constant/bookConstants";
+import { CLEAR_ERRORS } from "../Constant/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
     switch (action.type) {
-        case USER_REGISTER_REQUEST:
-        case USER_LOGIN_REQUEST:
+        case ADD_USER_BOOK_REQUEST:
             return {
                 loading: true,
-                isAuthenticated: false,
             };
 
-        case USER_REGISTER_SUCCESS:
-        case USER_LOGIN_SUCCESS:
-
+        case ADD_USER_BOOK_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 isAuthenticated: true,
-                user: action.payload,
+                book: action.payload
             };
 
-        case USER_REGISTER_FAIL:
-        case USER_LOGIN_FAIL:
+        case ADD_USER_BOOK_FAIL:
             return {
                 ...state,
                 isAuthenticated: false,
-                user: null,
+                users: null,
                 error: action.type,
             };
 

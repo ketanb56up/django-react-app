@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { useAlert } from "react-alert";
-import { register } from "../Redux/Action/userAction";
+import { register, clearErrors } from "../../Redux/Action/userAction";
 
-const Register = () => {
+const Register = ({ history }) => {
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
@@ -12,23 +12,28 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [cnPassword, setcnPassword] = useState("");
 
-    const dispatch = useDispatch();
     const alert = useAlert();
-    const { isAuthenticated, loading, error } = useSelector(state => state.users)
+    const dispatch = useDispatch();
+
+    const { isAuthenticated, loading, error, user } = useSelector(state => state.users)
+
+
 
     useEffect(() => {
+
         if (isAuthenticated) {
-            history.push('/login')
+            history.push('')
             alert.success("Registration Successful")
         }
         if (error) {
             alert.error(error);
             dispatch(clearErrors());
         }
-    }, []);
+
+    }, [isAuthenticated, dispatch, alert, error, history])
 
     const userDeatils = {
-        firstName, lastName, userName, cnPassword, email, password,
+        'first_name': firstName, 'last_name': lastName, 'username': userName, 'password2': cnPassword, email, password,
     };
 
     const submitHandler = (e) => {

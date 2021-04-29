@@ -2,8 +2,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { Link } from 'react-router-dom'
-import { login } from "../Redux/Action/userAction";
-const Login = () => {
+import { login, clearErrors } from "../../Redux/Action/userAction";
+const Login = ({ history }) => {
+
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,20 +15,25 @@ const Login = () => {
         (state) => state.users
     );
 
+    console.log('isAuthenticated', isAuthenticated)
+
     useEffect(() => {
         if (isAuthenticated) {
             history.push("/user/dashboard");
         }
+
         if (error) {
             alert.error(error);
             dispatch(clearErrors());
         }
 
     });
+    const loginDetails = { 'username': userName, password }
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(login(userName, password));
+
+        dispatch(login(loginDetails));
     };
 
     return (

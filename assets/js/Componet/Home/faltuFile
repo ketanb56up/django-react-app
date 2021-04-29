@@ -7,3 +7,16 @@ lastName: "rathore"
 password: "akki1999"
 userName: "Akki123"
 https://www.freecodecamp.org/news/access-control-allow-origin-header-explained/
+
+email: "Romanmoxley123@gmail.com"
+first_name: "Roman"
+id: 3
+last_name: "moxley"
+username: "Romanmoxley123"
+__proto__: Object
+
+email: "stevesmith123@yopmail.com"
+first_name: "steve"
+id: 6
+last_name: "smith"
+username: "stevesmith123"

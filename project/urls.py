@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from user.views import UserViewSet
+from user.views import UserViewSet, index
 from books.views import BookViewSet
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
@@ -15,6 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('api/', include(router.urls)),
+    path('', index, name='index'),
 ]
 
 if settings.DEBUG:

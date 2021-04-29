@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from books.serializers import BookSerializer
+from user.serializers import UserSerializer
 from books.models import Book
 
 
@@ -27,3 +28,10 @@ class BookViewSet(viewsets.ModelViewSet):
         """To get list of all books."""
         serializer = BookSerializer(self.queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, permission_classes=[IsAuthenticated], methods=['get'])
+    def profile(self, request):
+        """To get logged in user profile."""
+        user = request.user
+        serialized_user = UserSerializer(user).data
+        return Response({'user': serialized_user})

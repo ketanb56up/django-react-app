@@ -18,12 +18,12 @@ class BookViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """To pass onli list of book whose author is logged in user."""
-        if self.request.query_params.get("author_id", None):
-            self.queryset = self.queryset.filter(
-                author=User.objects.get(pk=self.request.query_params.get("author_id")))
+        self.queryset = self.queryset.filter(
+            author=User.objects.get(id=request.user.id))
         return super().list(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
+        """Delete the object."""
         book = self.get_object()
         book.delete()
         return Response(data={'success':True})

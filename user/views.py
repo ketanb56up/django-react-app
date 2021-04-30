@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny
 from user.serializers import MyTokenObtainPairSerializer, UserSerializer
 from rest_framework import viewsets
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,9 +38,10 @@ class LogoutView(APIView):
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
+            logout(request)
+            return Response(data={'success': True}, status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def index(request):

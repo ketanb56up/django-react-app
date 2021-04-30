@@ -23,6 +23,11 @@ class BookViewSet(viewsets.ModelViewSet):
                 author=User.objects.get(pk=self.request.query_params.get("author_id")))
         return super().list(request, *args, **kwargs)
 
+    def destroy(self, request, *args, **kwargs):
+        book = self.get_object()
+        book.delete()
+        return Response(data={'success':True})
+
     @action(detail=False, permission_classes=(AllowAny,), methods=['get'])
     def all_book_list(self, request):
         """To get list of all books."""
@@ -35,3 +40,4 @@ class BookViewSet(viewsets.ModelViewSet):
         user = request.user
         serialized_user = UserSerializer(user).data
         return Response({'user': serialized_user})
+

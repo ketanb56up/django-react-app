@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+
 import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
@@ -11,6 +11,16 @@ import {
 
     CLEAR_ERRORS,
 
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAIL,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAIL,
+    NULL_LOAD_USER_SUCCESS,
+    NULL_ALL_AUTHOR_BOOK_SUCCESS,
+    NULL_ALL_AUTHOR_BOOK_FAIL,
+    NULL_LOAD_USER_FAIL,
+
 } from "../Constant/userConstants";
 
 
@@ -21,7 +31,6 @@ export const register = (userData) => async (dispatch) => {
 
         const { data } = await axios.post("http://localhost:8000/api/user/ ", userData);
 
-        console.log("Data in Register..", data)
 
         dispatch({
             type: USER_REGISTER_SUCCESS,
@@ -46,7 +55,6 @@ export const login = (loginDetails) => async (dispatch) => {
             "http://localhost:8000/user/login/", loginDetails
         );
 
-        console.log("Data in Login..", data)
         dispatch({
             type: USER_LOGIN_SUCCESS,
             payload: data
@@ -60,25 +68,73 @@ export const login = (loginDetails) => async (dispatch) => {
     }
 };
 
+// Load user
+export const loadUser = (token) => async (dispatch) => {
 
-// // Logout user
-// export const logout = () => async (dispatch) => {
-//     try {
+    try {
 
-//         await axios.delete("http://localhost:8000/user/logout/");
+        dispatch({ type: LOAD_USER_REQUEST })
 
-//         dispatch({
-//             type: LOGOUT_SUCCESS,
-//         });
+        const { data } = await axios.get("http://localhost:8000/api/book/profile/", {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            }
+        });
 
-//     } catch (error) {
-//         dispatch({
-//             type: LOGOUT_FAIL,
-//             payload: error.response.data.message,
-//         });
-//     }
-// };
+        dispatch({
+            type: LOAD_USER_SUCCESS,
+            payload: data.user
+        })
 
+    } catch (error) {
+        dispatch({
+            type: LOAD_USER_FAIL,
+            payload: error.response.data.message
+        })
+
+    }
+}
+
+// Logout user
+export const logout = (token, refresh_token) => async (dispatch) => {
+    try {
+
+
+        await axios.post('/user/logout/', refresh_token, {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            }
+        })
+
+        dispatch({
+            type: LOGOUT_SUCCESS,
+        })
+
+        dispatch({
+            type: NULL_LOAD_USER_SUCCESS
+        })
+
+        dispatch({
+            type: NULL_ALL_AUTHOR_BOOK_SUCCESS
+        })
+
+    } catch (error) {
+        dispatch({
+            type: LOGOUT_FAIL,
+            payload: error.response.data.message
+        })
+        dispatch({
+            type: NULL_ALL_AUTHOR_BOOK_FAIL,
+            payload: error.response.data.message
+        })
+        dispatch({
+            type: NULL_LOAD_USER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
     dispatch({

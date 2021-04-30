@@ -2,10 +2,22 @@ import {
     ADD_USER_BOOK_FAIL,
     ADD_USER_BOOK_REQUEST,
     ADD_USER_BOOK_SUCCESS,
+
+    ALL_BOOK_FAIL,
+    ALL_BOOK_REQUEST,
+    ALL_BOOK_SUCCESS,
+    AUTHOR_ALL_BOOK_FAIL,
+    AUTHOR_ALL_BOOK_REQUEST,
+    AUTHOR_ALL_BOOK_SUCCESS,
+    UPDATE_BOOK_FAIL,
+    UPDATE_BOOK_REQUEST,
+    UPDATE_BOOK_SUCCESS,
+    UPDATE_BOOK_RESET,
 } from "../Constant/bookConstants";
+
 import { CLEAR_ERRORS } from "../Constant/userConstants";
 
-export const userReducer = (state = { user: {} }, action) => {
+export const bookReducer = (state = { user: {} }, action) => {
     switch (action.type) {
         case ADD_USER_BOOK_REQUEST:
             return {
@@ -16,15 +28,15 @@ export const userReducer = (state = { user: {} }, action) => {
             return {
                 ...state,
                 loading: false,
-                isAuthenticated: true,
-                book: action.payload
+                succes: true,
+                books: action.payload
             };
 
         case ADD_USER_BOOK_FAIL:
             return {
                 ...state,
-                isAuthenticated: false,
-                users: null,
+                success: false,
+                books: null,
                 error: action.type,
             };
 
@@ -38,3 +50,75 @@ export const userReducer = (state = { user: {} }, action) => {
             return state;
     }
 };
+export const authorAllBookReducer = (state = { authorallbooks: [] }, action) => {
+    switch (action.type) {
+        case AUTHOR_ALL_BOOK_REQUEST:
+        case ALL_BOOK_REQUEST:
+            return {
+                loading: true,
+                authorallbooks: []
+            }
+
+        case AUTHOR_ALL_BOOK_SUCCESS:
+        case ALL_BOOK_SUCCESS:
+            return {
+                loading: false,
+                authorallbooks: action.payload,
+            }
+
+        case AUTHOR_ALL_BOOK_FAIL:
+        case ALL_BOOK_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+export const updateBookReducer = (state = {}, action) => {
+    switch (action.type) {
+
+        case UPDATE_BOOK_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case UPDATE_BOOK_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isUpdated: action.payload
+            }
+
+        case UPDATE_BOOK_RESET:
+            return {
+                ...state,
+                isUpdated: false
+            }
+
+        case UPDATE_BOOK_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}

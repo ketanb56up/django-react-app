@@ -1,37 +1,71 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { addBook } from '../../Redux/Action/bookAction'
 
-const AddBooks = () => {
-    const [authorID, setAuthorId] = useState('')
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [bookImage, setBookImage] = useState('')
 
-    const bookDeatils = {
-        'author': authorID, 'title': title, 'description': description, 'poster_image': bookImage
-    };
+const AddBooks = ({ history }) => {
+    const { loaduser, error } = useSelector(state => state.loaduser)
+    const { success, loading } = useSelector(state => state.bookRe)
+    const { user } = useSelector((state) => state.users);
+
+    const token = user?.access
+
+    const [book, setBook] = useState({
+        title: '',
+        description: '',
+        author: loaduser.id,
+    })
+
+    const { title, description, author } = book;
+
+
+    const [poster_image, setposter_image] = useState('')
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        if (success) {
+            history.push("/user/dashboard")
+        }
+        if (error) {
+            alert.error(error);
+            dispatch(clearErrors());
+        }
+
+    }, [dispatch, alert, error, history])
 
     const submitHandler = (e) => {
-        // e.preventDefault();
-        // dispatch(addBook(bookDeatils))
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+
+        formData.append('title', title);
+
+        formData.append('description', description);
+
+        formData.append('author', author);
+
+
+        formData.append('poster_image', poster_image);
+
+
+
+        dispatch(addBook(formData, token))
     };
+
+    const onChange = e => {
+        if (e.target.name === 'poster_image') {
+
+            setposter_image(e.target.files[0])
+
+        } else {
+            setBook({ ...book, [e.target.name]: e.target.value })
+        }
+    }
 
     return (
         <form onSubmit={submitHandler}>
-
-            <div className="mb-3">
-                <label htmlFor="FirstName" className="form-label">
-                    Author Id
-            </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="FirstName"
-                    value={authorID}
-                    onChange={(e) => setAuthorId(e.target.value)}
-                    placeholder="Author Name"
-                />
-            </div>
 
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">
@@ -41,8 +75,9 @@ const AddBooks = () => {
                     type="text"
                     className="form-control"
                     id="title"
+                    name='title'
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={onChange}
                     placeholder="Book title"
                 />
             </div>
@@ -55,8 +90,9 @@ const AddBooks = () => {
                     type="text"
                     className="form-control"
                     id="description"
+                    name='description'
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={onChange}
                     placeholder="Book description"
                 />
             </div>
@@ -65,18 +101,19 @@ const AddBooks = () => {
                 <label htmlFor="Bimage" className="form-label">
                     Image
             </label>
-                <input
-                    type='file'
-                    value={bookImage}
-                    className='custom-file-input'
-                    onChange={(e) => setBookImage(e.target.files[0])}
-                    id='Bimage'
-                    accept="iamges/*"
-                />
+                {/* <ImageUploader
+                    withIcon={true}
+                    buttonText='Choose images'
+                    onChange={onchange}
+                    name="poster_image"
+                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                    maxFileSize={5242880}
+                /> */}
+                <input type="file" name="poster_image" onChange={onChange} id="Bimage" />
             </div>
 
 
-            <button type="submit" className="btn btn-primary" >
+            <button type="submit" className="btn btn-primary" disabled={loading ? true : false} >
                 Add Book
         </button>
         </form>

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { Link } from 'react-router-dom'
-import { login, clearErrors } from "../../Redux/Action/userAction";
+import { login, clearErrors, loadUser } from "../../Redux/Action/userAction";
 const Login = ({ history }) => {
 
     const [userName, setUserName] = useState("");
@@ -14,8 +14,7 @@ const Login = ({ history }) => {
     const { isAuthenticated, loading, error, user } = useSelector(
         (state) => state.users
     );
-
-    console.log('isAuthenticated', isAuthenticated)
+    const token = user?.access
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -25,6 +24,10 @@ const Login = ({ history }) => {
         if (error) {
             alert.error(error);
             dispatch(clearErrors());
+        }
+
+        if (token) {
+            dispatch(loadUser(token))
         }
 
     });

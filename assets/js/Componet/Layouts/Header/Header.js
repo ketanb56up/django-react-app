@@ -5,14 +5,16 @@ import { Link } from 'react-router-dom'
 import { logout } from '../../../Redux/Action/userAction'
 
 const Header = () => {
-    const alert = useAlert()
+
     const dispatch = useDispatch()
+    const { loading, user } = useSelector(state => state.users)
+    const token = user?.access
+    const refresh_token = user?.refresh
 
     const logoutHandler = () => {
-        dispatch(logout());
-        alert.success('Logged out successfully.')
+        dispatch(logout(refresh_token, token));
     }
-    const { loading, user } = useSelector(state => state.users)
+
     return (
 
         <Fragment>
@@ -20,7 +22,7 @@ const Header = () => {
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="#">Navbar</Link>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        {user.access ? (
+                        {token ? (
                             <ul className="navbar-nav mr-auto">
 
                                 <li className="nav-item active mr-2">
@@ -38,7 +40,7 @@ const Header = () => {
                             </ul>
                         ) :
                             (
-                                !loading && <Link className="nav-link btn btn-danger text-white" to="/login">Login<span className="sr-only">(current)</span></Link>
+                                !loading && <Link className="nav-link btn btn-danger text-white" to="/login">Login</Link>
                             )
                         }
 

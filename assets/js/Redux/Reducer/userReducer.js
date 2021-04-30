@@ -9,6 +9,13 @@ import {
 
     CLEAR_ERRORS,
 
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAIL,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAIL,
+    NULL_LOAD_USER_SUCCESS,
+
 } from "../Constant/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -39,6 +46,59 @@ export const userReducer = (state = { user: {} }, action) => {
                 error: action.type,
             };
 
+
+        case LOGOUT_SUCCESS:
+            return {
+                loading: false,
+                isAuthenticated: false,
+                user: null
+            }
+        case LOGOUT_FAIL:
+            return {
+                ...state,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+
+        default:
+            return state;
+    }
+};
+export const loaduserReducer = (state = { user: {} }, action) => {
+
+    switch (action.type) {
+        case LOAD_USER_REQUEST:
+            return {
+                loading: true,
+                isAuthenticated: false,
+            };
+
+        case LOAD_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: true,
+                loaduser: action.payload,
+            };
+
+        case LOAD_USER_FAIL:
+            return {
+                loading: false,
+                isAuthenticated: false,
+                loaduser: null,
+                error: action.payload
+            }
+
+        case NULL_LOAD_USER_SUCCESS:
+            return {
+                loading: false,
+                isAuthenticated: false,
+                loaduser: null
+            }
 
         case CLEAR_ERRORS:
             return {

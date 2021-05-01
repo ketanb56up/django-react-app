@@ -13,7 +13,7 @@ Open a shell and run `pipenv install` to install the necessary Python dependenci
 
 Next, run `pipenv shell` to activate the virtual environment.
 
-then run `python manage.py runserver`
+then run `python3 manage.py runserver`
 
 In a separate shell, run `npm i` to install the necessary NPM dependencies and `npm run dev` to start Webpack bundling.
 

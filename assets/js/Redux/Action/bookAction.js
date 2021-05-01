@@ -85,7 +85,6 @@ export const deleteBook = (token, id) => async (dispatch) => {
             type: DELETE_BOOK_SUCCESS,
             payload: data.success
         })
-        console.log("Delete Data", data.success)
     } catch (error) {
         dispatch({
             type: DELETE_BOOK_FAIL,

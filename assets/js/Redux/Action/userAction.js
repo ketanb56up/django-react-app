@@ -89,7 +89,6 @@ export const logout = (refresh_token, token) => async (dispatch) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(data)
 
         dispatch({
             type: LOGOUT_SUCCESS,
@@ -106,7 +105,6 @@ export const logout = (refresh_token, token) => async (dispatch) => {
             payload: data.success,
         });
     } catch (error) {
-        console.log(error)
         dispatch({
             type: LOGOUT_FAIL,
             payload: error.response.data.message,

@@ -9,9 +9,7 @@ const Header = ({ history }) => {
     const dispatch = useDispatch()
     const { loading, user, isSuccess } = useSelector(state => state.users)
     const token = user?.access
-    console.log("Accss", token)
     const refresh_token = user?.refresh
-    console.log("refresh", refresh_token)
 
     const logoutHandler = () => {
         dispatch(logout(refresh_token, token));
@@ -50,11 +48,6 @@ const Header = ({ history }) => {
                                 !loading && <Link className="nav-link btn btn-danger text-white" to="/login">Login</Link>
                             )
                         }
-
-                        <form className="d-flex">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
-                        </form>
                     </div>
                 </div>
             </nav>

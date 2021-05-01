@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from user.views import UserViewSet, index
 from books.views import BookViewSet
 from rest_framework.routers import DefaultRouter
@@ -12,10 +12,10 @@ router.register(r'user', UserViewSet, basename='user')
 router.register(r'book', BookViewSet, basename='book')
 
 urlpatterns = [
+	re_path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('api/', include(router.urls)),
-    path('', index, name='index'),
 ]
 
 if settings.DEBUG:

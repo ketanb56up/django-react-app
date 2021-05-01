@@ -7,4 +7,4 @@ bundles
 webpack-stats.json
 .DS_Store
 .magicindex.json
-/media
+media

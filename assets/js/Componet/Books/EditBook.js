@@ -1,39 +1,55 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { updateBook } from '../../Redux/Action/bookAction';
+import { UPDATE_BOOK_RESET } from '../../Redux/Constant/bookConstants'
 
-const EditBook = ({ history }) => {
+const EditBook = ({ history, match }) => {
+
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [poster_image, setposter_image] = useState('')
+    const [author, setAuthor] = useState('')
+
     const { user } = useSelector((state) => state.users);
     const { authorallbooks } = useSelector(state => state.authorAllBook)
-    const { isUpdated, error, loading } = useSelector(state => state.updateBook)
+
     const token = user?.access
 
-    const [book, setBook] = useState({
-        title: '',
-        description: '',
-    })
+    var id = match.params.id
+    const getBookData = () => {
+        console.log(id)
+        var singleBook = authorallbooks.find(function (item) {
+            if (item.id == id)
+                return true;
+        });
 
-    const { title, description, author } = book;
+        if (singleBook) {
+            setTitle(singleBook.title)
+            setDescription(singleBook.description)
+            setAuthor(singleBook.author)
+            setposter_image(singleBook.poster_image)
+        }
+    }
 
-
-    const [poster_image, setposter_image] = useState('')
+    const { isUpdated, error, loading } = useSelector(state => state.updateBook)
 
     const dispatch = useDispatch();
     useEffect(() => {
 
-        // if (error) {
-        //     alert.error(error);
-        //     dispatch(clearErrors());
-        // }
+        getBookData()
+
+        if (error) {
+            alert.error(error);
+            dispatch(clearErrors());
+        }
 
         if (isUpdated) {
 
-            dispatch(loadUser());
-
             history.push('/user/dashboard')
-
             dispatch({
-                type: UPDATE_PROFILE_RESET
+                type: UPDATE_BOOK_RESET
             })
+
         }
 
     }, [dispatch, alert, error, history, isUpdated])
@@ -44,28 +60,18 @@ const EditBook = ({ history }) => {
         const formData = new FormData(e.target);
 
         formData.append('title', title);
-
         formData.append('description', description);
-
-        formData.append('author', author);
-
-
         formData.append('poster_image', poster_image);
-
-
-
-        dispatch(addBook(formData, token))
+        formData.append('author', author);
+        dispatch(updateBook(id, formData, token))
     };
 
-    const onChange = e => {
+    const onChangeImage = e => {
         if (e.target.name === 'poster_image') {
-
             setposter_image(e.target.files[0])
-
-        } else {
-            setBook({ ...book, [e.target.name]: e.target.value })
         }
     }
+
     return (
         <Fragment>
             <form onSubmit={submitHandler}>
@@ -80,7 +86,7 @@ const EditBook = ({ history }) => {
                         id="title"
                         name='title'
                         value={title}
-                        onChange={onChange}
+                        onChange={(e) => setTitle(e.target.value)}
                         placeholder="Book title"
                     />
                 </div>
@@ -95,7 +101,7 @@ const EditBook = ({ history }) => {
                         id="description"
                         name='description'
                         value={description}
-                        onChange={onChange}
+                        onChange={(e) => setDescription(e.target.value)}
                         placeholder="Book description"
                     />
                 </div>
@@ -105,7 +111,7 @@ const EditBook = ({ history }) => {
                         Image
                     </label>
 
-                    <input type="file" name="poster_image" onChange={onChange} id="Bimage" />
+                    <input type="file" name="poster_image" onChange={onChangeImage} id="Bimage" />
                 </div>
 
 

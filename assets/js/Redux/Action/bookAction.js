@@ -6,15 +6,18 @@ import {
     ALL_BOOK_FAIL,
     ALL_BOOK_REQUEST,
     ALL_BOOK_SUCCESS,
+
     AUTHOR_ALL_BOOK_FAIL,
     AUTHOR_ALL_BOOK_REQUEST,
     AUTHOR_ALL_BOOK_SUCCESS,
+
     DELETE_BOOK_FAIL,
     DELETE_BOOK_REQUEST,
     DELETE_BOOK_SUCCESS,
     UPDATE_BOOK_FAIL,
     UPDATE_BOOK_REQUEST,
     UPDATE_BOOK_SUCCESS,
+
 } from "../Constant/bookConstants";
 
 export const addBook = (bookdata, token) => async (dispatch) => {
@@ -43,11 +46,10 @@ export const addBook = (bookdata, token) => async (dispatch) => {
 };
 
 export const authorAllBooks = (token) => async (dispatch) => {
-    console.log("User All token: ", token);
     try {
         dispatch({ type: AUTHOR_ALL_BOOK_REQUEST });
 
-        const { data } = await axios.get("http://localhost:8000/api/book/", {
+        const { data } = await axios.get("/api/book/", {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -59,7 +61,7 @@ export const authorAllBooks = (token) => async (dispatch) => {
         });
 
     } catch (error) {
-        console.log(error);
+
         dispatch({
             type: AUTHOR_ALL_BOOK_FAIL,
             payload: error.response.data.message,
@@ -72,17 +74,14 @@ export const allbooks = () => async (dispatch) => {
         dispatch({ type: ALL_BOOK_REQUEST });
 
         const { data } = await axios.get(
-            "http://localhost:8000/api/book/all_book_list/"
+            "/api/book/all_book_list/"
         );
-
-        console.log("Api All Data Book", data);
 
         dispatch({
             type: ALL_BOOK_SUCCESS,
             payload: data,
         });
     } catch (error) {
-        console.log(error);
         dispatch({
             type: ALL_BOOK_FAIL,
             payload: error.response.data.message,
@@ -91,16 +90,21 @@ export const allbooks = () => async (dispatch) => {
 };
 
 // Delete Books
-export const deleteBook = (id) => async (dispatch) => {
+export const deleteBook = (token, id) => async (dispatch) => {
     try {
 
         dispatch({ type: DELETE_BOOK_REQUEST })
 
-        const { data } = await axios.delete(`http://localhost:8000/api/book/${id}/`)
+        const { data } = await axios.delete(`/api/book/${id}/`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
 
         dispatch({
             type: DELETE_BOOK_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {
@@ -110,13 +114,13 @@ export const deleteBook = (id) => async (dispatch) => {
         })
     }
 }
-// Update profile
-export const updateProfile = (id, formData) => async (dispatch) => {
+// Update book
+export const updateBook = (id, formData, token) => async (dispatch) => {
     try {
 
         dispatch({ type: UPDATE_BOOK_REQUEST })
 
-        const { data } = await axios.put(`/api/book/${id}/`, formData, {
+        const { data } = await axios.patch(`/api/book/${id}/`, formData, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,

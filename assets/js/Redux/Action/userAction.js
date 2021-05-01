@@ -29,7 +29,7 @@ export const register = (userData) => async (dispatch) => {
 
         dispatch({ type: USER_REGISTER_REQUEST });
 
-        const { data } = await axios.post("http://localhost:8000/api/user/ ", userData);
+        const { data } = await axios.post("/api/user/ ", userData);
 
 
         dispatch({
@@ -52,7 +52,7 @@ export const login = (loginDetails) => async (dispatch) => {
         });
 
         const { data } = await axios.post(
-            "http://localhost:8000/user/login/", loginDetails
+            "/user/login/", loginDetails
         );
 
         dispatch({
@@ -75,7 +75,7 @@ export const loadUser = (token) => async (dispatch) => {
 
         dispatch({ type: LOAD_USER_REQUEST })
 
-        const { data } = await axios.get("http://localhost:8000/api/book/profile/", {
+        const { data } = await axios.get("/api/book/profile/", {
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": `Bearer ${token}`

@@ -13,6 +13,9 @@ import {
     UPDATE_BOOK_REQUEST,
     UPDATE_BOOK_SUCCESS,
     UPDATE_BOOK_RESET,
+    DELETE_BOOK_FAIL,
+    DELETE_BOOK_REQUEST,
+    DELETE_BOOK_SUCCESS,
 } from "../Constant/bookConstants";
 
 import { CLEAR_ERRORS } from "../Constant/userConstants";
@@ -87,6 +90,7 @@ export const updateBookReducer = (state = {}, action) => {
     switch (action.type) {
 
         case UPDATE_BOOK_REQUEST:
+        case DELETE_BOOK_REQUEST:
             return {
                 ...state,
                 loading: true
@@ -98,7 +102,12 @@ export const updateBookReducer = (state = {}, action) => {
                 loading: false,
                 isUpdated: action.payload
             }
-
+        case DELETE_BOOK_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isDeleted: action.payload
+            }
         case UPDATE_BOOK_RESET:
             return {
                 ...state,
@@ -106,6 +115,7 @@ export const updateBookReducer = (state = {}, action) => {
             }
 
         case UPDATE_BOOK_FAIL:
+        case DELETE_BOOK_FAIL:
             return {
                 ...state,
                 loading: false,

@@ -47,9 +47,9 @@ const AddBooks = ({ history }) => {
         formData.append('author', author);
 
 
-        formData.append('poster_image', poster_image);
+        formData.append('poster_image', poster_image,);
 
-
+        debugger
 
         dispatch(addBook(formData, token))
     };
@@ -58,6 +58,7 @@ const AddBooks = ({ history }) => {
         if (e.target.name === 'poster_image') {
 
             setposter_image(e.target.files[0])
+            console.log("poster_image", poster_image)
 
         } else {
             setBook({ ...book, [e.target.name]: e.target.value })

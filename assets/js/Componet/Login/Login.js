@@ -39,6 +39,9 @@ const Login = ({ history }) => {
         dispatch(login(loginDetails));
     };
 
+    const floatStyle = {
+        float: 'right'
+    }
     return (
         <Fragment>
             <div className="container mt-5">
@@ -75,7 +78,7 @@ const Login = ({ history }) => {
                         Login
                 </button>
 
-                    <Link to="/register" className="float-right mt-3">
+                    <Link to="/register" style={floatStyle} className=" mt-3">
                         New User?
                      </Link>
 

@@ -1,20 +1,27 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logout } from '../../../Redux/Action/userAction'
 
-const Header = () => {
+const Header = ({ history }) => {
 
     const dispatch = useDispatch()
-    const { loading, user } = useSelector(state => state.users)
+    const { loading, user, isSuccess } = useSelector(state => state.users)
     const token = user?.access
+    console.log("Accss", token)
     const refresh_token = user?.refresh
+    console.log("refresh", refresh_token)
 
     const logoutHandler = () => {
         dispatch(logout(refresh_token, token));
-    }
 
+    }
+    useEffect(() => {
+        if (user === null && isSuccess) {
+            history.push('/')
+        }
+    }, [isSuccess, user])
     return (
 
         <Fragment>

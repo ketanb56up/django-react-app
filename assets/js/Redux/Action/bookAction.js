@@ -68,26 +68,6 @@ export const authorAllBooks = (token) => async (dispatch) => {
         });
     }
 };
-export const allbooks = () => async (dispatch) => {
-
-    try {
-        dispatch({ type: ALL_BOOK_REQUEST });
-
-        const { data } = await axios.get(
-            "/api/book/all_book_list/"
-        );
-
-        dispatch({
-            type: ALL_BOOK_SUCCESS,
-            payload: data,
-        });
-    } catch (error) {
-        dispatch({
-            type: ALL_BOOK_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
 
 // Delete Books
 export const deleteBook = (token, id) => async (dispatch) => {
@@ -101,12 +81,11 @@ export const deleteBook = (token, id) => async (dispatch) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-
         dispatch({
             type: DELETE_BOOK_SUCCESS,
-            payload: data
+            payload: data.success
         })
-
+        console.log("Delete Data", data.success)
     } catch (error) {
         dispatch({
             type: DELETE_BOOK_FAIL,

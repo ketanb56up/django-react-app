@@ -17,17 +17,18 @@ import UserDashboard from './Componet/Books/UserDashboard';
 import AddBook from './Componet/Books/AddBooks';
 import { loadUser } from './Redux/Action/userAction';
 import EditBook from './Componet/Books/EditBook';
-
+import ProtectedRoute from "./routes/ProtectedRoute"
 const options = {
     timeout: 5000,
     position: positions.BOTTOM_CENTER,
     transition: transitions.SCALE,
 };
 
+const { user } = useSelector(state => state.users)
+const token = user?.access
+{ token ? true : false }
 const App = () => {
-    // useEffect(() => {
-    //     store.dispatch(loadUser())
-    // })
+
     return (
         <Router>
             <div className="App">
@@ -36,10 +37,11 @@ const App = () => {
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route path="/login" component={Login} exact />
-                        <Route exact path="/register" component={Register} />
-                        <Route exact path="/user/dashboard" component={UserDashboard} />
-                        <Route exact path="/user/add-book" component={AddBook} />
-                        <Route exact path="/user/edit/:id" component={EditBook} />
+
+                        <ProtectedRoute exact path="/register" component={Register} />
+                        <ProtectedRoute exact path="/user/dashboard" component={UserDashboard} />
+                        <ProtectedRoute exact path="/user/add-book" component={AddBook} />
+                        <ProtectedRoute exact path="/user/edit/:id" component={EditBook} />
                     </Switch>
                 </div>
             </div>

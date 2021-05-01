@@ -4,13 +4,10 @@ import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAIL,
-
     USER_LOGIN_FAIL,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
-
     CLEAR_ERRORS,
-
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
@@ -20,23 +17,18 @@ import {
     NULL_ALL_AUTHOR_BOOK_SUCCESS,
     NULL_ALL_AUTHOR_BOOK_FAIL,
     NULL_LOAD_USER_FAIL,
-
 } from "../Constant/userConstants";
-
 
 export const register = (userData) => async (dispatch) => {
     try {
-
         dispatch({ type: USER_REGISTER_REQUEST });
 
         const { data } = await axios.post("/api/user/ ", userData);
-
 
         dispatch({
             type: USER_REGISTER_SUCCESS,
             payload: data,
         });
-
     } catch (error) {
         dispatch({
             type: USER_REGISTER_FAIL,
@@ -51,15 +43,12 @@ export const login = (loginDetails) => async (dispatch) => {
             type: USER_LOGIN_REQUEST,
         });
 
-        const { data } = await axios.post(
-            "/user/login/", loginDetails
-        );
+        const { data } = await axios.post("/user/login/", loginDetails);
 
         dispatch({
             type: USER_LOGIN_SUCCESS,
-            payload: data
+            payload: data,
         });
-
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
@@ -70,74 +59,71 @@ export const login = (loginDetails) => async (dispatch) => {
 
 // Load user
 export const loadUser = (token) => async (dispatch) => {
-
     try {
-
-        dispatch({ type: LOAD_USER_REQUEST })
+        dispatch({ type: LOAD_USER_REQUEST });
 
         const { data } = await axios.get("/api/book/profile/", {
             headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Bearer ${token}`
-            }
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
         });
 
         dispatch({
             type: LOAD_USER_SUCCESS,
-            payload: data.user
-        })
-
+            payload: data.user,
+        });
     } catch (error) {
         dispatch({
             type: LOAD_USER_FAIL,
-            payload: error.response.data.message
-        })
-
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
 // Logout user
-export const logout = (token, refresh_token) => async (dispatch) => {
+export const logout = (refresh_token, token) => async (dispatch) => {
     try {
-
-
-        await axios.post('/user/logout/', refresh_token, {
+        const { data } = await axios.post("/user/logout/", { refresh_token }, {
             headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Bearer ${token}`
-            }
-        })
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(data)
 
         dispatch({
             type: LOGOUT_SUCCESS,
-        })
+            payload: data.success,
+        });
 
         dispatch({
-            type: NULL_LOAD_USER_SUCCESS
-        })
+            type: NULL_LOAD_USER_SUCCESS,
+            payload: data.success,
+        });
 
         dispatch({
-            type: NULL_ALL_AUTHOR_BOOK_SUCCESS
-        })
-
+            type: NULL_ALL_AUTHOR_BOOK_SUCCESS,
+            payload: data.success,
+        });
     } catch (error) {
+        console.log(error)
         dispatch({
             type: LOGOUT_FAIL,
-            payload: error.response.data.message
-        })
+            payload: error.response.data.message,
+        });
         dispatch({
             type: NULL_ALL_AUTHOR_BOOK_FAIL,
-            payload: error.response.data.message
-        })
+            payload: error.response.data.message,
+        });
         dispatch({
             type: NULL_LOAD_USER_FAIL,
-            payload: error.response.data.message
-        })
+            payload: error.response.data.message,
+        });
     }
-}
+};
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
     dispatch({
-        type: CLEAR_ERRORS
-    })
-}
+        type: CLEAR_ERRORS,
+    });
+};

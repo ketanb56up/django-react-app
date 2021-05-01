@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addBook } from '../../Redux/Action/bookAction'
+import { ADD_USER_BOOK_RESET } from '../../Redux/Constant/bookConstants'
 
 
 const AddBooks = ({ history }) => {
     const { loaduser, error } = useSelector(state => state.loaduser)
-    const { success, loading } = useSelector(state => state.bookRe)
     const { user } = useSelector((state) => state.users);
+    const { success, loading } = useSelector(state => state.bookRe)
 
     const token = user?.access
 
@@ -25,15 +26,22 @@ const AddBooks = ({ history }) => {
 
     useEffect(() => {
 
-        if (success) {
-            history.push("/user/dashboard")
-        }
         if (error) {
             alert.error(error);
             dispatch(clearErrors());
         }
 
-    }, [dispatch, alert, error, history])
+        console.log("Success", success)
+
+        if (success) {
+            history.push('/user/dashboard')
+            dispatch({ type: ADD_USER_BOOK_RESET })
+        }
+
+    }, [dispatch, alert, error, success, history])
+
+
+
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -41,15 +49,9 @@ const AddBooks = ({ history }) => {
         const formData = new FormData(e.target);
 
         formData.append('title', title);
-
         formData.append('description', description);
-
         formData.append('author', author);
-
-
         formData.append('poster_image', poster_image,);
-
-        debugger
 
         dispatch(addBook(formData, token))
     };

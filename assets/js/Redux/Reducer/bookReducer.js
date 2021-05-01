@@ -16,9 +16,10 @@ import {
     DELETE_BOOK_FAIL,
     DELETE_BOOK_REQUEST,
     DELETE_BOOK_SUCCESS,
+    ADD_USER_BOOK_RESET,
 } from "../Constant/bookConstants";
 
-import { CLEAR_ERRORS } from "../Constant/userConstants";
+import { CLEAR_ERRORS, NULL_ALL_AUTHOR_BOOK_SUCCESS } from "../Constant/userConstants";
 
 export const bookReducer = (state = { user: {} }, action) => {
     switch (action.type) {
@@ -31,10 +32,14 @@ export const bookReducer = (state = { user: {} }, action) => {
             return {
                 ...state,
                 loading: false,
-                succes: true,
+                success: true,
                 books: action.payload
             };
-
+        case ADD_USER_BOOK_RESET:
+            return {
+                ...state,
+                success: false
+            }
         case ADD_USER_BOOK_FAIL:
             return {
                 ...state,
@@ -56,21 +61,24 @@ export const bookReducer = (state = { user: {} }, action) => {
 export const authorAllBookReducer = (state = { authorallbooks: [] }, action) => {
     switch (action.type) {
         case AUTHOR_ALL_BOOK_REQUEST:
-        case ALL_BOOK_REQUEST:
             return {
                 loading: true,
                 authorallbooks: []
             }
 
         case AUTHOR_ALL_BOOK_SUCCESS:
-        case ALL_BOOK_SUCCESS:
             return {
+                loading: false,
+                authorallbooks: action.payload,
+            }
+        case NULL_ALL_AUTHOR_BOOK_SUCCESS:
+            return {
+                ...state,
                 loading: false,
                 authorallbooks: action.payload,
             }
 
         case AUTHOR_ALL_BOOK_FAIL:
-        case ALL_BOOK_FAIL:
             return {
                 loading: false,
                 error: action.payload
